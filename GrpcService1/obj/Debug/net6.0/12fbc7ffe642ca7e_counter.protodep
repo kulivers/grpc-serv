@@ -1,0 +1,2 @@
+obj\Debug\net6.0\Protos/Counter.cs \
+obj\Debug\net6.0\Protos/CounterGrpc.cs: Protos/counter.proto
