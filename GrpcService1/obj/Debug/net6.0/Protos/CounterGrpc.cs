@@ -8,9 +8,6 @@
 using grpc = global::Grpc.Core;
 
 namespace Count {
-  /// <summary>
-  /// The greeting service definition.
-  /// </summary>
   public static partial class Counter
   {
     static readonly string __ServiceName = "count.Counter";

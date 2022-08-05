@@ -3,6 +3,7 @@ using Grpc.Core;
 
 namespace GrpcService1.Services
 {
+     //System.Timer _timer = new Timer(state => {  var data = new { title = "Message", data = Guid.NewGuid()}});
     public class GrpcCounterService : Counter.CounterBase
     {
         public GrpcCounterService(CounterServiceImp imp)
@@ -32,11 +33,11 @@ namespace GrpcService1.Services
         public override async Task Countdown(Empty request, IServerStreamWriter<CounterReply> responseStream,
             ServerCallContext context)
         {
-            while (CounterServImp.Counter != 0)
+            while (CounterServImp.Counter != 0 && !context.CancellationToken.IsCancellationRequested)
             {
                 await responseStream.WriteAsync(new CounterReply() { CurCounter = CounterServImp.Counter });
                 CounterServImp.Counter--;
-                await Task.Delay(300);
+                await Task.Delay(540);
             }
         }
 
@@ -53,8 +54,7 @@ namespace GrpcService1.Services
         }
 
         public override Task<CounterReply> GetCounter(Empty request, ServerCallContext context)
-        {
-            //if reply counter = 0, it returns {{}} instead of {"curCounter": 0}
+        { 
             var reply = new CounterReply() { CurCounter = CounterServImp.Counter };
             var reply0 = new CounterReply() { CurCounter = 0 }; //this one returns {} too unfortunately
             var reply2 = new CounterReply() { CurCounter = 3 };

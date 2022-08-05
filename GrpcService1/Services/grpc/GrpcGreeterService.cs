@@ -10,15 +10,16 @@ public class GrpcGreeterService : Greeter.GreeterBase
         return Task.FromResult(new HelloReply { Message = $"Hello {request.Name}" });
     }
 
-    public override async Task SayHellos(HelloRequest request, IServerStreamWriter<HelloReply> responseStream, ServerCallContext context)
+    public override async Task SayHellos(HelloRequest request, IServerStreamWriter<HelloReply> responseStream,
+        ServerCallContext context)
     {
+        
         var i = 0;
-        while (!context.CancellationToken.IsCancellationRequested && i<5)
+        while (!context.CancellationToken.IsCancellationRequested && i < 5)
         {
             await responseStream.WriteAsync(new HelloReply { Message = $"Hello {request.Name} {i}" });
             await Task.Delay(TimeSpan.FromMilliseconds(500));
             i++;
         }
     }
-    
 }

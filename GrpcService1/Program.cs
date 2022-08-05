@@ -1,27 +1,27 @@
 using GrpcService1;
-using Grpc.AspNetCore.Web;
 using GrpcService1.Services;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddGrpc();
-
-
-builder.Services.AddSingleton<CounterServiceImp>();
+builder.Services.AddGrpcReflection();
 builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder =>
 {
     builder.AllowAnyOrigin()
         .AllowAnyMethod()
-        .AllowAnyHeader()
-        .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+        .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "x-protobuf", "Grpc-Accept-Encoding", "X-Grpc-Web", "User-Agent")
+        .AllowAnyHeader();
 }));
+builder.Services.AddSingleton<CounterServiceImp>();
 
 var app = builder.Build();
+app.UseHttpsRedirection();
+
 app.UseRouting();
-app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true }); // all services support Web
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+app.MapGrpcReflectionService();
 app.UseCors();
-app.UseEndpoints(endpoints => {
+app.UseEndpoints(endpoints =>
+{
     endpoints.MapGrpcService<GrpcCounterService>().EnableGrpcWeb().RequireCors("AllowAll");
     endpoints.MapGrpcService<GrpcGreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
 });

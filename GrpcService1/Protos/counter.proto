@@ -1,9 +1,10 @@
-syntax = "proto3";
 
+syntax = "proto3";
 package count;
 
 
-// The greeting service definition.
+
+
 service Counter {
 	rpc GetCounter(Empty) returns (CounterReply);
 	rpc Increment(Empty) returns (CounterReply);
@@ -12,13 +13,11 @@ service Counter {
 	rpc Countdown (Empty) returns (stream CounterReply);
 }
 
-
 message Empty{}
 
 message CounterRequest {
 	int32 count = 1;
 }
-
 
 message CounterReply {
 	int32 curCounter = 1;
