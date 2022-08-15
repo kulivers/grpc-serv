@@ -1,9 +1,5 @@
-
 syntax = "proto3";
 package count;
-
-
-
 
 service Counter {
 	rpc GetCounter(Empty) returns (CounterReply);

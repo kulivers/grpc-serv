@@ -18,8 +18,7 @@
         }
         public CounterServiceImp()
         {
-            Counter = 25;
+            Counter = 228;
         }
-
     }
 }

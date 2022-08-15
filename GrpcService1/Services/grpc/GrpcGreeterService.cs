@@ -13,7 +13,6 @@ public class GrpcGreeterService : Greeter.GreeterBase
     public override async Task SayHellos(HelloRequest request, IServerStreamWriter<HelloReply> responseStream,
         ServerCallContext context)
     {
-        
         var i = 0;
         while (!context.CancellationToken.IsCancellationRequested && i < 5)
         {
